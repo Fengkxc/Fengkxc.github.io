@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Yu Zhang · SLAM / Sensor Fusion</title>
+<style>
+  :root{
+    --bg:#0a0e17;
+    --bg2:#0f1522;
+    --card:#141b2b;
+    --card-hover:#1a2336;
+    --border:#243049;
+    --text:#e6ecf5;
+    --text-dim:#9aa8bf;
+    --accent:#38bdf8;
+    --accent2:#22d3ee;
+    --glow:rgba(56,189,248,0.15);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);text-decoration:none;transition:.2s}
+  a:hover{color:var(--accent2)}
+
+  /* background gradient glow */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-1;
+    background:
+      radial-gradient(600px circle at 20% 10%, var(--glow), transparent 45%),
+      radial-gradient(500px circle at 85% 30%, rgba(34,211,238,0.10), transparent 45%);
+  }
+
+  .wrap{max-width:860px;margin:0 auto;padding:0 24px}
+
+  /* top bar */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,14,23,0.75);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .nav-name{font-weight:700;letter-spacing:.5px}
+  .nav-links{display:flex;gap:22px;align-items:center}
+  .nav-links a{color:var(--text-dim);font-size:14px}
+  .nav-links a:hover{color:var(--accent)}
+  #langBtn{
+    background:transparent;border:1px solid var(--border);color:var(--text-dim);
+    padding:5px 12px;border-radius:6px;cursor:pointer;font-size:13px;transition:.2s
+  }
+  #langBtn:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* hero */
+  header{padding:70px 0 50px}
+  .hero{display:flex;gap:34px;align-items:center;flex-wrap:wrap}
+  .avatar{
+    width:130px;height:130px;border-radius:50%;flex-shrink:0;
+    background:linear-gradient(135deg,#1a2336,#243049);
+    border:2px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    font-size:42px;color:var(--accent);overflow:hidden;
+  }
+  .avatar img{width:100%;height:100%;object-fit:cover}
+  .hero-info h1{font-size:32px;font-weight:700;margin-bottom:6px}
+  .hero-info .tagline{color:var(--accent);font-size:16px;margin-bottom:12px}
+  .hero-info p{color:var(--text-dim);max-width:520px;font-size:15px}
+  .hero-links{margin-top:16px;display:flex;gap:12px;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:8px 16px;border-radius:8px;font-size:14px;font-weight:500;
+    border:1px solid var(--border);color:var(--text);
+  }
+  .btn:hover{border-color:var(--accent);color:var(--accent);background:var(--card)}
+  .btn-primary{background:var(--accent);color:#04121c;border-color:var(--accent)}
+  .btn-primary:hover{background:var(--accent2);color:#04121c;border-color:var(--accent2)}
+
+  /* sections */
+  section{padding:34px 0;border-top:1px solid var(--border)}
+  .sec-title{
+    font-size:13px;text-transform:uppercase;letter-spacing:2px;
+    color:var(--accent);margin-bottom:22px;font-weight:600;
+  }
+
+  .item{margin-bottom:26px}
+  .item:last-child{margin-bottom:0}
+  .item-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+  .item-title{font-size:17px;font-weight:600}
+  .item-meta{color:var(--text-dim);font-size:13px;white-space:nowrap}
+  .item-sub{color:var(--accent);font-size:14px;margin:2px 0 8px}
+  .item ul{list-style:none;margin-top:6px}
+  .item li{
+    position:relative;padding-left:18px;color:var(--text-dim);
+    font-size:14.5px;margin-bottom:5px
+  }
+  .item li::before{content:"▸";position:absolute;left:0;color:var(--accent);font-size:12px;top:2px}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{
+    font-size:12px;padding:3px 10px;border-radius:20px;
+    background:var(--card);border:1px solid var(--border);color:var(--text-dim)
+  }
+  .card{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:20px 22px;transition:.2s
+  }
+  .card:hover{background:var(--card-hover);border-color:var(--accent)}
+
+  .pub-badge{
+    display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;
+    background:rgba(56,189,248,0.15);color:var(--accent);margin-left:8px;vertical-align:middle
+  }
+
+  .skills{display:flex;gap:10px;flex-wrap:wrap}
+  .skill{
+    background:var(--card);border:1px solid var(--border);border-radius:8px;
+    padding:6px 14px;font-size:14px;color:var(--text)
+  }
+
+  footer{padding:40px 0;border-top:1px solid var(--border);color:var(--text-dim);font-size:13px;text-align:center}
+
+  /* language visibility */
+  [data-en]{display:none}
+  body.en [data-zh]{display:none}
+  body.en [data-en]{display:revert}
+
+  @media(max-width:600px){
+    .hero{flex-direction:column;text-align:center}
+    .hero-links{justify-content:center}
+    .nav-links{gap:14px}
+    .nav-links a:not(#langBtn){display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <span class="nav-name">Yu Zhang</span>
+    <div class="nav-links">
+      <a href="#about"><span data-zh>关于</span><span data-en>About</span></a>
+      <a href="#pub"><span data-zh>论文</span><span data-en>Publications</span></a>
+      <a href="#projects"><span data-zh>项目</span><span data-en>Projects</span></a>
+      <a href="#contact"><span data-zh>联系</span><span data-en>Contact</span></a>
+      <button id="langBtn" onclick="toggleLang()">EN</button>
+    </div>
+  </div>
+</nav>
+
+<header id="about">
+  <div class="wrap">
+    <div class="hero">
+      <div class="avatar">
+        <!-- TODO: 换成你的头像 <img src="avatar.jpg" alt=""> -->
+        <span>YZ</span>
+      </div>
+      <div class="hero-info">
+        <h1>张宇 / Yu Zhang</h1>
+        <div class="tagline">
+          <span data-zh>SLAM · 多传感器融合 · 具身状态估计</span>
+          <span data-en>SLAM · Multi-Sensor Fusion · Embodied State Estimation</span>
+        </div>
+        <p data-zh>武汉大学测绘遥感信息工程全国重点实验室硕士研究生。研究方向为多传感器融合状态估计，以及用学习方法解决经典估计框架中的噪声与可靠性建模痛点，覆盖 GNSS/IMU/LiDAR 融合与学习增强的足式里程计。</p>
+        <p data-en>M.S. student at the State Key Laboratory of LIESMARS, Wuhan University. My research focuses on multi-sensor fusion state estimation and on using learning to address noise and reliability modeling in classical estimation frameworks — spanning GNSS/IMU/LiDAR fusion and learning-augmented legged odometry.</p>
+        <div class="hero-links">
+          <!-- TODO: 把 resume.pdf 放到同目录 -->
+          <a class="btn btn-primary" href="resume.pdf" target="_blank">
+            <span data-zh>下载简历</span><span data-en>Download CV</span>
+          </a>
+          <!-- TODO: 换成你的真实链接 -->
+          <a class="btn" href="https://github.com/YOUR_ID" target="_blank">GitHub</a>
+          <a class="btn" href="mailto:YOUR_EMAIL@example.com">Email</a>
+          <a class="btn" href="https://scholar.google.com/" target="_blank">Scholar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="edu">
+  <div class="wrap">
+    <div class="sec-title"><span data-zh>教育经历</span><span data-en>Education</span></div>
+    <div class="item">
+      <div class="item-head">
+        <span class="item-title">
+          <span data-zh>武汉大学 · 硕士</span><span data-en>Wuhan University · M.S.</span>
+        </span>
+        <span class="item-meta">2024 — 2027</span>
+      </div>
+      <div class="item-sub">
+        <span data-zh>测绘遥感信息工程全国重点实验室（LIESMARS）· 导师：李由 教授</span>
+        <span data-en>State Key Lab of LIESMARS · Advisor: Prof. You Li</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pub">
+  <div class="wrap">
+    <div class="sec-title"><span data-zh>论文</span><span data-en>Publications</span></div>
+    <div class="card">
+      <div class="item-title">
+        WinTA-GIL: Window-based Trajectory Alignment for Heading Refinement in GNSS-Intermittent Environments
+        <span class="pub-badge">IROS 2026</span>
+      </div>
+      <div class="item-sub" style="margin-top:6px">
+        <!-- TODO: 按真实作者顺序修改，别虚标一作 -->
+        Kaixin Feng, <b>Yu Zhang</b>, ..., You Li
+      </div>
+      <p style="color:var(--text-dim);font-size:14px;margin-top:6px">
+        <span data-zh>将航向估计从单次初始对齐扩展为基于时间窗口的持续轨迹一致性优化，通过 LIO 与 GNSS 轨迹的加权刚体配准反解航向，并以自适应伪观测注入 EKF，在 GNSS 中断恢复阶段显著抑制航向漂移。</span>
+        <span data-en>Reformulates heading estimation from one-shot initial alignment into a continuous, window-based trajectory-consistency optimization; recovers heading via weighted rigid alignment between LIO and GNSS trajectories and injects it as an adaptive pseudo-observation into an EKF, strongly suppressing heading drift after GNSS outages.</span>
+      </p>
+      <div class="hero-links" style="margin-top:12px">
+        <a class="btn" href="https://www.bilibili.com/video/BV19MPXzaEae/" target="_blank">
+          <span data-zh>演示视频</span><span data-en>Demo</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-title"><span data-zh>项目经历</span><span data-en>Projects</span></div>
+
+    <div class="item">
+      <div class="item-head">
+        <span class="item-title">
+          <span data-zh>学习型足式里程计 · Per-axis FK 可靠性权重</span>
+          <span data-en>Learning-Augmented Legged Odometry · Per-axis FK Reliability</span>
+        </span>
+        <span class="item-meta">
+          <span data-zh>智元创新 · 2026.04–06</span>
+          <span data-en>AgiBot · Apr–Jun 2026</span>
+        </span>
+      </div>
+      <ul>
+        <li><span data-zh>基于 Transformer 预测每足每轴（per-axis）的正运动学速度可靠性权重（6 维无量纲）。</span><span data-en>A Transformer predicts per-axis forward-kinematics velocity reliability as a 6-D dimensionless weight.</span></li>
+        <li><span data-zh>设计权重到 EKF 观测噪声的自适应映射 R=R_base(1+(1−w)S)，对打滑/腾空等退化工况各向异性降权。</span><span data-en>Maps weights to EKF measurement noise via R=R_base(1+(1−w)S), enabling anisotropic down-weighting during slip / flight phases.</span></li>
+        <li><span data-zh>自监督 FK 加权损失 + BCE 正则，配合域随机化缓解 sim-to-real 差异。</span><span data-en>Self-supervised FK-weighted loss with BCE regularization, plus domain randomization to reduce the sim-to-real gap.</span></li>
+        <li><span data-zh>690K 轻量网络，100Hz 实时推理，异步更新、超时回退固定噪声以保证滤波不阻塞。</span><span data-en>690K-param lightweight model at 100Hz; asynchronous updates with fixed-noise fallback keep the filter non-blocking.</span></li>
+      </ul>
+      <div class="tags">
+        <span class="tag">Transformer</span><span class="tag">EKF</span><span class="tag">Legged Robot</span><span class="tag">Sim-to-Real</span>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-head">
+        <span class="item-title">
+          <span data-zh>SPARK · 多传感器融合高精度定位系统</span>
+          <span data-en>SPARK · High-Precision Multi-Sensor Fusion Positioning</span>
+        </span>
+        <span class="item-meta">2024.09–2025.09</span>
+      </div>
+      <ul>
+        <li><span data-zh>参与 GNSS/IMU/LiDAR 多源融合定位系统开发，实现复杂环境下的鲁棒状态估计。</span><span data-en>Contributed to a GNSS/IMU/LiDAR fusion positioning system for robust state estimation in complex environments.</span></li>
+        <li><span data-zh>设计系统初始化模块（INS Alignment），优化姿态与航向初值估计策略。</span><span data-en>Designed the INS alignment module, improving initial attitude and heading estimation.</span></li>
+        <li><span data-zh>建模并优化非完整约束（NHC），提升车辆运动约束精度与系统稳定性。</span><span data-en>Modeled and refined the non-holonomic constraint (NHC) to improve vehicle motion constraints and stability.</span></li>
+        <li><span data-zh>基于 ROS 构建多传感器数据同步与通信框架，实现实时融合与模块化部署。</span><span data-en>Built a ROS-based multi-sensor synchronization framework for real-time fusion and modular deployment.</span></li>
+      </ul>
+      <div class="tags">
+        <span class="tag">GNSS/INS</span><span class="tag">LiDAR</span><span class="tag">ROS</span><span class="tag">NHC</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-title"><span data-zh>技能</span><span data-en>Skills</span></div>
+    <div class="skills">
+      <span class="skill">C/C++</span>
+      <span class="skill">Python</span>
+      <span class="skill">PyTorch</span>
+      <span class="skill">Matlab</span>
+      <span class="skill">ROS</span>
+      <span class="skill">Eigen</span>
+      <span class="skill">Ceres</span>
+      <span class="skill">OpenCV</span>
+      <span class="skill">PCL</span>
+      <span class="skill">CMake</span>
+      <span class="skill">Docker</span>
+      <span class="skill">Git</span>
+      <span class="skill">Linux</span>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-title"><span data-zh>联系方式</span><span data-en>Contact</span></div>
+    <p style="color:var(--text-dim)">
+      <span data-zh>欢迎交流 SLAM / 多传感器融合 / 具身状态估计相关话题。</span>
+      <span data-en>Happy to chat about SLAM / sensor fusion / embodied state estimation.</span>
+    </p>
+    <div class="hero-links" style="margin-top:14px">
+      <a class="btn" href="mailto:YOUR_EMAIL@example.com">✉ Email</a>
+      <a class="btn" href="https://github.com/YOUR_ID" target="_blank">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    © 2026 Yu Zhang ·
+    <span data-zh>用 HTML 手写，托管于 GitHub Pages</span>
+    <span data-en>Hand-coded HTML, hosted on GitHub Pages</span>
+  </div>
+</footer>
+
+<script>
+  function toggleLang(){
+    document.body.classList.toggle('en');
+    var en = document.body.classList.contains('en');
+    document.documentElement.lang = en ? 'en' : 'zh';
+    document.getElementById('langBtn').textContent = en ? '中' : 'EN';
+  }
+</script>
+</body>
+</html>
