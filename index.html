@@ -3,136 +3,128 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Yu Zhang · SLAM / Sensor Fusion</title>
+<title>Kaixin Feng · SLAM & Multi-Sensor Fusion</title>
 <style>
   :root{
-    --bg:#0a0e17;
-    --bg2:#0f1522;
-    --card:#141b2b;
-    --card-hover:#1a2336;
-    --border:#243049;
-    --text:#e6ecf5;
-    --text-dim:#9aa8bf;
-    --accent:#38bdf8;
-    --accent2:#22d3ee;
-    --glow:rgba(56,189,248,0.15);
+    --bg:#0b0f17;
+    --bg-soft:#0f141f;
+    --card:#131a26;
+    --card-hover:#182131;
+    --border:#232e42;
+    --border-soft:#1b2434;
+    --text:#eef2f8;
+    --text-dim:#98a6bd;
+    --text-faint:#66748c;
+    --accent:#4ea8ff;
+    --accent-2:#38e0c8;
+    --maxw:820px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
-    font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Helvetica,Arial,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.7;
-    -webkit-font-smoothing:antialiased;
+    font-family:"Inter",-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Helvetica,sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.7;
+    -webkit-font-smoothing:antialiased;letter-spacing:.1px;
   }
-  a{color:var(--accent);text-decoration:none;transition:.2s}
-  a:hover{color:var(--accent2)}
+  a{color:var(--accent);text-decoration:none;transition:color .18s}
+  a:hover{color:var(--accent-2)}
 
-  /* background gradient glow */
   body::before{
-    content:"";position:fixed;inset:0;z-index:-1;
+    content:"";position:fixed;inset:0;z-index:-2;
     background:
-      radial-gradient(600px circle at 20% 10%, var(--glow), transparent 45%),
-      radial-gradient(500px circle at 85% 30%, rgba(34,211,238,0.10), transparent 45%);
+      radial-gradient(680px circle at 15% -5%, rgba(78,168,255,0.10), transparent 50%),
+      radial-gradient(560px circle at 95% 8%, rgba(56,224,200,0.07), transparent 45%);
   }
 
-  .wrap{max-width:860px;margin:0 auto;padding:0 24px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
 
-  /* top bar */
-  nav{
-    position:sticky;top:0;z-index:50;
-    background:rgba(10,14,23,0.75);backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border);
-  }
-  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
-  .nav-name{font-weight:700;letter-spacing:.5px}
-  .nav-links{display:flex;gap:22px;align-items:center}
-  .nav-links a{color:var(--text-dim);font-size:14px}
-  .nav-links a:hover{color:var(--accent)}
-  #langBtn{
-    background:transparent;border:1px solid var(--border);color:var(--text-dim);
-    padding:5px 12px;border-radius:6px;cursor:pointer;font-size:13px;transition:.2s
-  }
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;background:rgba(11,15,23,.72);
+    backdrop-filter:blur(12px);border-bottom:1px solid var(--border-soft)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
+  .brand{font-weight:700;letter-spacing:.4px;font-size:15px}
+  .brand span{color:var(--accent)}
+  .nav-right{display:flex;gap:24px;align-items:center}
+  .nav-right a{color:var(--text-dim);font-size:13.5px;font-weight:500}
+  .nav-right a:hover{color:var(--text)}
+  #langBtn{background:transparent;border:1px solid var(--border);color:var(--text-dim);
+    padding:5px 13px;border-radius:20px;cursor:pointer;font-size:12.5px;font-weight:600;transition:.18s}
   #langBtn:hover{border-color:var(--accent);color:var(--accent)}
 
   /* hero */
-  header{padding:70px 0 50px}
-  .hero{display:flex;gap:34px;align-items:center;flex-wrap:wrap}
-  .avatar{
-    width:130px;height:130px;border-radius:50%;flex-shrink:0;
-    background:linear-gradient(135deg,#1a2336,#243049);
-    border:2px solid var(--border);
-    display:flex;align-items:center;justify-content:center;
-    font-size:42px;color:var(--accent);overflow:hidden;
-  }
+  header{padding:66px 0 30px}
+  .hero{display:flex;gap:36px;align-items:center;flex-wrap:wrap}
+  .avatar{width:118px;height:118px;border-radius:24px;flex-shrink:0;overflow:hidden;
+    background:linear-gradient(140deg,#1a2333,#0f1622);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:700;color:var(--accent)}
   .avatar img{width:100%;height:100%;object-fit:cover}
-  .hero-info h1{font-size:32px;font-weight:700;margin-bottom:6px}
-  .hero-info .tagline{color:var(--accent);font-size:16px;margin-bottom:12px}
-  .hero-info p{color:var(--text-dim);max-width:520px;font-size:15px}
-  .hero-links{margin-top:16px;display:flex;gap:12px;flex-wrap:wrap}
-  .btn{
-    display:inline-flex;align-items:center;gap:6px;
-    padding:8px 16px;border-radius:8px;font-size:14px;font-weight:500;
-    border:1px solid var(--border);color:var(--text);
-  }
+  .intro h1{font-size:30px;font-weight:750;line-height:1.2}
+  .intro h1 .en-name{font-size:17px;color:var(--text-dim);font-weight:500;margin-left:8px}
+  .tagline{color:var(--accent);font-size:14.5px;font-weight:600;margin:8px 0 12px;letter-spacing:.3px}
+  .intro p{color:var(--text-dim);font-size:14.5px;max-width:540px}
+  .links{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;
+    font-size:13.5px;font-weight:600;border:1px solid var(--border);color:var(--text)}
   .btn:hover{border-color:var(--accent);color:var(--accent);background:var(--card)}
-  .btn-primary{background:var(--accent);color:#04121c;border-color:var(--accent)}
-  .btn-primary:hover{background:var(--accent2);color:#04121c;border-color:var(--accent2)}
+  .btn-primary{background:var(--accent);color:#04101f;border-color:var(--accent)}
+  .btn-primary:hover{background:var(--accent-2);border-color:var(--accent-2);color:#04101f}
 
   /* sections */
-  section{padding:34px 0;border-top:1px solid var(--border)}
-  .sec-title{
-    font-size:13px;text-transform:uppercase;letter-spacing:2px;
-    color:var(--accent);margin-bottom:22px;font-weight:600;
-  }
+  section{padding:30px 0}
+  .sec-head{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .sec-head h2{font-size:13px;text-transform:uppercase;letter-spacing:2.5px;color:var(--accent);font-weight:700;white-space:nowrap}
+  .sec-head .rule{height:1px;background:linear-gradient(90deg,var(--border),transparent);flex:1}
 
-  .item{margin-bottom:26px}
-  .item:last-child{margin-bottom:0}
-  .item-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
-  .item-title{font-size:17px;font-weight:600}
-  .item-meta{color:var(--text-dim);font-size:13px;white-space:nowrap}
-  .item-sub{color:var(--accent);font-size:14px;margin:2px 0 8px}
-  .item ul{list-style:none;margin-top:6px}
-  .item li{
-    position:relative;padding-left:18px;color:var(--text-dim);
-    font-size:14.5px;margin-bottom:5px
-  }
-  .item li::before{content:"▸";position:absolute;left:0;color:var(--accent);font-size:12px;top:2px}
-  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
-  .tag{
-    font-size:12px;padding:3px 10px;border-radius:20px;
-    background:var(--card);border:1px solid var(--border);color:var(--text-dim)
-  }
-  .card{
-    background:var(--card);border:1px solid var(--border);border-radius:12px;
-    padding:20px 22px;transition:.2s
-  }
-  .card:hover{background:var(--card-hover);border-color:var(--accent)}
+  .entry{margin-bottom:24px}
+  .entry:last-child{margin-bottom:0}
+  .entry-head{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:baseline}
+  .entry-title{font-size:16px;font-weight:650}
+  .entry-meta{color:var(--text-faint);font-size:12.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .entry-sub{color:var(--text-dim);font-size:13.5px;margin-top:3px}
+  .entry-sub .hl{color:var(--accent-2)}
+  ul.bullets{list-style:none;margin-top:9px}
+  ul.bullets li{position:relative;padding-left:17px;color:var(--text-dim);font-size:13.8px;margin-bottom:5px}
+  ul.bullets li::before{content:"";position:absolute;left:2px;top:10px;width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.7}
+  .tags{margin-top:11px;display:flex;gap:7px;flex-wrap:wrap}
+  .tag{font-size:11.5px;padding:3px 11px;border-radius:20px;background:var(--bg-soft);
+    border:1px solid var(--border);color:var(--text-dim)}
 
-  .pub-badge{
-    display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;
-    background:rgba(56,189,248,0.15);color:var(--accent);margin-left:8px;vertical-align:middle
-  }
+  /* pub card */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 22px;
+    transition:.2s;margin-bottom:14px}
+  .card:hover{background:var(--card-hover);border-color:#2d3c56;transform:translateY(-1px)}
+  .card:last-child{margin-bottom:0}
+  .pub-title{font-size:15px;font-weight:650;line-height:1.45}
+  .badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:5px;
+    background:rgba(78,168,255,.16);color:var(--accent);margin-left:2px;vertical-align:middle;letter-spacing:.3px}
+  .badge.oral{background:rgba(56,224,200,.15);color:var(--accent-2)}
+  .authors{font-size:13px;color:var(--text-dim);margin-top:8px}
+  .authors b{color:var(--text)}
 
-  .skills{display:flex;gap:10px;flex-wrap:wrap}
-  .skill{
-    background:var(--card);border:1px solid var(--border);border-radius:8px;
-    padding:6px 14px;font-size:14px;color:var(--text)
-  }
+  /* two-col */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .mini{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+  .mini h3{font-size:14px;font-weight:650;margin-bottom:8px}
+  .mini p{font-size:13px;color:var(--text-dim)}
 
-  footer{padding:40px 0;border-top:1px solid var(--border);color:var(--text-dim);font-size:13px;text-align:center}
+  /* skills */
+  .skills{display:flex;gap:8px;flex-wrap:wrap}
+  .skill{background:var(--card);border:1px solid var(--border);border-radius:8px;
+    padding:6px 13px;font-size:13px;color:var(--text)}
+  .skill:hover{border-color:var(--accent);color:var(--accent)}
 
-  /* language visibility */
+  footer{padding:38px 0;border-top:1px solid var(--border-soft);color:var(--text-faint);font-size:12.5px;text-align:center}
+
   [data-en]{display:none}
   body.en [data-zh]{display:none}
   body.en [data-en]{display:revert}
 
   @media(max-width:600px){
-    .hero{flex-direction:column;text-align:center}
-    .hero-links{justify-content:center}
-    .nav-links{gap:14px}
-    .nav-links a:not(#langBtn){display:none}
+    .hero{flex-direction:column;text-align:center;gap:20px}
+    .links{justify-content:center}
+    .grid2{grid-template-columns:1fr}
+    .nav-right a:not(#langBtn){display:none}
+    .intro h1 .en-name{display:block;margin:4px 0 0}
   }
 </style>
 </head>
@@ -140,10 +132,10 @@
 
 <nav>
   <div class="wrap">
-    <span class="nav-name">Yu Zhang</span>
-    <div class="nav-links">
+    <span class="brand">Kaixin <span>Feng</span></span>
+    <div class="nav-right">
       <a href="#about"><span data-zh>关于</span><span data-en>About</span></a>
-      <a href="#pub"><span data-zh>论文</span><span data-en>Publications</span></a>
+      <a href="#pub"><span data-zh>研究</span><span data-en>Research</span></a>
       <a href="#projects"><span data-zh>项目</span><span data-en>Projects</span></a>
       <a href="#contact"><span data-zh>联系</span><span data-en>Contact</span></a>
       <button id="langBtn" onclick="toggleLang()">EN</button>
@@ -155,26 +147,22 @@
   <div class="wrap">
     <div class="hero">
       <div class="avatar">
-        <!-- TODO: 换成你的头像 <img src="avatar.jpg" alt=""> -->
-        <span>YZ</span>
+        <img src="avatar.jpg" alt="Kaixin Feng">
       </div>
-      <div class="hero-info">
-        <h1>张宇 / Yu Zhang</h1>
+      <div class="intro">
+        <h1><span data-zh>冯凯鑫</span><span data-en>Kaixin Feng</span><span class="en-name" data-zh>Kaixin Feng</span></h1>
         <div class="tagline">
-          <span data-zh>SLAM · 多传感器融合 · 具身状态估计</span>
-          <span data-en>SLAM · Multi-Sensor Fusion · Embodied State Estimation</span>
+          <span data-zh>SLAM · 多传感器融合 · 机器人状态估计</span>
+          <span data-en>SLAM · Multi-Sensor Fusion · Robot State Estimation</span>
         </div>
-        <p data-zh>武汉大学测绘遥感信息工程全国重点实验室硕士研究生。研究方向为多传感器融合状态估计，以及用学习方法解决经典估计框架中的噪声与可靠性建模痛点，覆盖 GNSS/IMU/LiDAR 融合与学习增强的足式里程计。</p>
-        <p data-en>M.S. student at the State Key Laboratory of LIESMARS, Wuhan University. My research focuses on multi-sensor fusion state estimation and on using learning to address noise and reliability modeling in classical estimation frameworks — spanning GNSS/IMU/LiDAR fusion and learning-augmented legged odometry.</p>
-        <div class="hero-links">
-          <!-- TODO: 把 resume.pdf 放到同目录 -->
+        <p data-zh>武汉大学测绘遥感信息工程全国重点实验室（LIESMARS）硕士研究生，导师李由教授。研究方向为 GNSS/IMU/LiDAR 多源融合定位与机器人状态估计，并探索用学习方法增强经典估计框架中的可靠性与噪声建模。</p>
+        <p data-en>M.S. student at the State Key Laboratory of LIESMARS, Wuhan University, advised by Prof. You Li. My research centers on GNSS/IMU/LiDAR fusion positioning and robot state estimation, and on augmenting classical estimation frameworks with learning-based reliability and noise modeling.</p>
+        <div class="links">
           <a class="btn btn-primary" href="resume.pdf" target="_blank">
             <span data-zh>下载简历</span><span data-en>Download CV</span>
           </a>
-          <!-- TODO: 换成你的真实链接 -->
-          <a class="btn" href="https://github.com/YOUR_ID" target="_blank">GitHub</a>
-          <a class="btn" href="mailto:YOUR_EMAIL@example.com">Email</a>
-          <a class="btn" href="https://scholar.google.com/" target="_blank">Scholar</a>
+          <a class="btn" href="https://github.com/Fengkxc" target="_blank">GitHub</a>
+          <a class="btn" href="mailto:kaixinfeng@whu.edu.cn">Email</a>
         </div>
       </div>
     </div>
@@ -183,17 +171,27 @@
 
 <section id="edu">
   <div class="wrap">
-    <div class="sec-title"><span data-zh>教育经历</span><span data-en>Education</span></div>
-    <div class="item">
-      <div class="item-head">
-        <span class="item-title">
-          <span data-zh>武汉大学 · 硕士</span><span data-en>Wuhan University · M.S.</span>
-        </span>
-        <span class="item-meta">2024 — 2027</span>
+    <div class="sec-head"><h2><span data-zh>教育经历</span><span data-en>Education</span></h2><div class="rule"></div></div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-title"><span data-zh>武汉大学 — 硕士</span><span data-en>Wuhan University — M.S.</span></span>
+        <span class="entry-meta">Sep 2025 — Present</span>
       </div>
-      <div class="item-sub">
-        <span data-zh>测绘遥感信息工程全国重点实验室（LIESMARS）· 导师：李由 教授</span>
-        <span data-en>State Key Lab of LIESMARS · Advisor: Prof. You Li</span>
+      <div class="entry-sub">
+        <span data-zh>测绘遥感信息工程全国重点实验室（LIESMARS）· 计算机技术 · 导师：<span class="hl">李由 教授</span></span>
+        <span data-en>State Key Lab of LIESMARS · Computer Technology · Advisor: <span class="hl">Prof. You Li</span></span>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-title"><span data-zh>武汉大学 — 本科</span><span data-en>Wuhan University — B.E.</span></span>
+        <span class="entry-meta">Sep 2021 — Jun 2025</span>
+      </div>
+      <div class="entry-sub">
+        <span data-zh>遥感信息工程学院 · 遥感科学与技术 · GPA 3.75/4.0 · 排名 10/48（保研本校）</span>
+        <span data-en>School of Remote Sensing · Remote Sensing Sci. &amp; Tech. · GPA 3.75/4.0 · Rank 10/48 (recommended for graduate study)</span>
       </div>
     </div>
   </div>
@@ -201,24 +199,35 @@
 
 <section id="pub">
   <div class="wrap">
-    <div class="sec-title"><span data-zh>论文</span><span data-en>Publications</span></div>
+    <div class="sec-head"><h2><span data-zh>研究工作</span><span data-en>Publications</span></h2><div class="rule"></div></div>
+
     <div class="card">
-      <div class="item-title">
-        WinTA-GIL: Window-based Trajectory Alignment for Heading Refinement in GNSS-Intermittent Environments
-        <span class="pub-badge">IROS 2026</span>
+      <div class="pub-title">
+        WinTA-GIL: Windowed Trajectory Alignment for GNSS/IMU/LiDAR Heading Refinement in Intermittent Signal Environments
+        <span class="badge">IROS 2026</span><span class="badge oral">Oral</span>
       </div>
-      <div class="item-sub" style="margin-top:6px">
-        <!-- TODO: 按真实作者顺序修改，别虚标一作 -->
-        Kaixin Feng, <b>Yu Zhang</b>, ..., You Li
-      </div>
-      <p style="color:var(--text-dim);font-size:14px;margin-top:6px">
-        <span data-zh>将航向估计从单次初始对齐扩展为基于时间窗口的持续轨迹一致性优化，通过 LIO 与 GNSS 轨迹的加权刚体配准反解航向，并以自适应伪观测注入 EKF，在 GNSS 中断恢复阶段显著抑制航向漂移。</span>
-        <span data-en>Reformulates heading estimation from one-shot initial alignment into a continuous, window-based trajectory-consistency optimization; recovers heading via weighted rigid alignment between LIO and GNSS trajectories and injects it as an adaptive pseudo-observation into an EKF, strongly suppressing heading drift after GNSS outages.</span>
+      <div class="authors"><b>K. Feng</b>, Z. Wen, Z. Liao, X. Xia, Y. Li*　·　<span data-zh>一作 · 已录用（Oral）</span><span data-en>First author · Accepted (Oral)</span></div>
+      <p style="color:var(--text-dim);font-size:13.5px;margin-top:8px">
+        <span data-zh>将航向估计从单次初始对齐扩展为基于时间窗口的持续轨迹一致性优化，通过 LIO 与 GNSS 轨迹的加权刚体配准反解航向，并以自适应伪观测注入 EKF，显著抑制 GNSS 中断恢复阶段的航向漂移。</span>
+        <span data-en>Reformulates heading estimation from one-shot alignment into a continuous window-based trajectory-consistency optimization; recovers heading via weighted rigid alignment between LIO and GNSS trajectories, injected as an adaptive EKF pseudo-observation to suppress heading drift after GNSS outages.</span>
       </p>
-      <div class="hero-links" style="margin-top:12px">
-        <a class="btn" href="https://www.bilibili.com/video/BV19MPXzaEae/" target="_blank">
-          <span data-zh>演示视频</span><span data-en>Demo</span>
-        </a>
+      <div class="links" style="margin-top:12px">
+        <a class="btn" href="https://www.bilibili.com/video/BV19MPXzaEae/" target="_blank"><span data-zh>演示视频</span><span data-en>Demo</span></a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="pub-title">
+        A Modular and Scalable Multi-Sensor Fusion Framework Toward Ubiquitous High-Precision Positioning
+        <span class="badge">UPINLBS 2025</span><span class="badge oral">Oral</span>
+      </div>
+      <div class="authors"><b>K. Feng</b>, Z. Wen, X. Huang, K. Lu, Y. Li*　·　<span data-zh>一作</span><span data-en>First author</span></div>
+      <p style="color:var(--text-dim);font-size:13.5px;margin-top:8px">
+        <span data-zh>提出模块化、可扩展的多传感器融合定位框架，面向复杂环境下的泛在高精度定位。</span>
+        <span data-en>A modular and scalable multi-sensor fusion framework for ubiquitous high-precision positioning in complex environments.</span>
+      </p>
+      <div class="links" style="margin-top:12px">
+        <a class="btn" href="https://ieeexplore.ieee.org/abstract/document/11468426" target="_blank">IEEE Paper</a>
       </div>
     </div>
   </div>
@@ -226,92 +235,100 @@
 
 <section id="projects">
   <div class="wrap">
-    <div class="sec-title"><span data-zh>项目经历</span><span data-en>Projects</span></div>
+    <div class="sec-head"><h2><span data-zh>项目经历</span><span data-en>Projects</span></h2><div class="rule"></div></div>
 
-    <div class="item">
-      <div class="item-head">
-        <span class="item-title">
-          <span data-zh>学习型足式里程计 · Per-axis FK 可靠性权重</span>
-          <span data-en>Learning-Augmented Legged Odometry · Per-axis FK Reliability</span>
-        </span>
-        <span class="item-meta">
-          <span data-zh>智元创新 · 2026.04–06</span>
-          <span data-en>AgiBot · Apr–Jun 2026</span>
-        </span>
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-title"><span data-zh>学习型足式里程计 · Per-axis FK 可靠性权重</span><span data-en>Learning-Augmented Legged Odometry · Per-axis FK Reliability</span></span>
+        <span class="entry-meta"><span data-zh>智元创新 · 2026.04–06</span><span data-en>AgiBot · Apr–Jun 2026</span></span>
       </div>
-      <ul>
-        <li><span data-zh>基于 Transformer 预测每足每轴（per-axis）的正运动学速度可靠性权重（6 维无量纲）。</span><span data-en>A Transformer predicts per-axis forward-kinematics velocity reliability as a 6-D dimensionless weight.</span></li>
-        <li><span data-zh>设计权重到 EKF 观测噪声的自适应映射 R=R_base(1+(1−w)S)，对打滑/腾空等退化工况各向异性降权。</span><span data-en>Maps weights to EKF measurement noise via R=R_base(1+(1−w)S), enabling anisotropic down-weighting during slip / flight phases.</span></li>
-        <li><span data-zh>自监督 FK 加权损失 + BCE 正则，配合域随机化缓解 sim-to-real 差异。</span><span data-en>Self-supervised FK-weighted loss with BCE regularization, plus domain randomization to reduce the sim-to-real gap.</span></li>
-        <li><span data-zh>690K 轻量网络，100Hz 实时推理，异步更新、超时回退固定噪声以保证滤波不阻塞。</span><span data-en>690K-param lightweight model at 100Hz; asynchronous updates with fixed-noise fallback keep the filter non-blocking.</span></li>
+      <ul class="bullets">
+        <li><span data-zh>基于 Transformer 预测每足每轴（per-axis）正运动学速度可靠性权重（6 维无量纲）。</span><span data-en>Transformer predicting per-axis forward-kinematics velocity reliability as 6-D dimensionless weights.</span></li>
+        <li><span data-zh>权重到 EKF 观测噪声的自适应映射 R=R_base(1+(1−w)S)，对打滑/腾空等退化工况各向异性降权。</span><span data-en>Adaptive weight-to-noise mapping R=R_base(1+(1−w)S) for anisotropic down-weighting during slip / flight phases.</span></li>
+        <li><span data-zh>自监督 FK 加权损失 + BCE 正则，配合域随机化缓解 sim-to-real 差异。</span><span data-en>Self-supervised FK-weighted loss with BCE regularization plus domain randomization to reduce the sim-to-real gap.</span></li>
+        <li><span data-zh>690K 轻量网络、100Hz 实时推理，异步更新、超时回退固定噪声保证滤波不阻塞。</span><span data-en>690K-param model at 100Hz; asynchronous updates with fixed-noise fallback keep the filter non-blocking.</span></li>
       </ul>
-      <div class="tags">
-        <span class="tag">Transformer</span><span class="tag">EKF</span><span class="tag">Legged Robot</span><span class="tag">Sim-to-Real</span>
-      </div>
+      <div class="tags"><span class="tag">Transformer</span><span class="tag">EKF</span><span class="tag">Legged Robot</span><span class="tag">Sim-to-Real</span></div>
     </div>
 
-    <div class="item">
-      <div class="item-head">
-        <span class="item-title">
-          <span data-zh>SPARK · 多传感器融合高精度定位系统</span>
-          <span data-en>SPARK · High-Precision Multi-Sensor Fusion Positioning</span>
-        </span>
-        <span class="item-meta">2024.09–2025.09</span>
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-title"><span data-zh>航向优化 · WinTA-GIL</span><span data-en>Heading Refinement · WinTA-GIL</span></span>
+        <span class="entry-meta"><span data-zh>武大 LIESMARS · 2025.09–2026.03</span><span data-en>WHU LIESMARS · Sep 2025 – Mar 2026</span></span>
       </div>
-      <ul>
-        <li><span data-zh>参与 GNSS/IMU/LiDAR 多源融合定位系统开发，实现复杂环境下的鲁棒状态估计。</span><span data-en>Contributed to a GNSS/IMU/LiDAR fusion positioning system for robust state estimation in complex environments.</span></li>
-        <li><span data-zh>设计系统初始化模块（INS Alignment），优化姿态与航向初值估计策略。</span><span data-en>Designed the INS alignment module, improving initial attitude and heading estimation.</span></li>
-        <li><span data-zh>建模并优化非完整约束（NHC），提升车辆运动约束精度与系统稳定性。</span><span data-en>Modeled and refined the non-holonomic constraint (NHC) to improve vehicle motion constraints and stability.</span></li>
+      <ul class="bullets">
+        <li><span data-zh>提出基于滑动时间窗口的航向精化方法，将航向估计从单次初始对齐扩展为持续可重复的轨迹一致性优化。</span><span data-en>Window-based heading refinement, extending one-shot alignment into continuous trajectory-consistency optimization.</span></li>
+        <li><span data-zh>构建 GNSS 质量与轨迹几何一致性双重触发判据，用 Pearson 相关性评估航向可靠性。</span><span data-en>Dual triggering on GNSS quality and trajectory geometric consistency via Pearson correlation.</span></li>
+        <li><span data-zh>基于 SE(3) 刚体变换与杆臂补偿建模，用 Ceres 做加权非线性优化实现 LIO–GNSS 轨迹对齐。</span><span data-en>SE(3) rigid modeling with lever-arm compensation; weighted nonlinear optimization (Ceres) for LIO–GNSS alignment.</span></li>
+        <li><span data-zh>在 5 个序列上相比 KF-GINS 航向 RMSE 改善约 90%（1.04°）。</span><span data-en>~90% heading-RMSE improvement over KF-GINS (1.04°) across 5 sequences.</span></li>
+      </ul>
+      <div class="tags"><span class="tag">GNSS/INS</span><span class="tag">LiDAR</span><span class="tag">Ceres</span><span class="tag">EKF</span></div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-title"><span data-zh>组合导航系统 · SPARK</span><span data-en>Integrated Navigation · SPARK</span></span>
+        <span class="entry-meta"><span data-zh>武大 LIESMARS · 2024.09–2025.09</span><span data-en>WHU LIESMARS · Sep 2024 – Sep 2025</span></span>
+      </div>
+      <ul class="bullets">
+        <li><span data-zh>参与 GNSS/IMU/LiDAR 多源融合定位系统开发，实现复杂环境下的鲁棒状态估计。</span><span data-en>Contributed to a GNSS/IMU/LiDAR fusion positioning system for robust state estimation.</span></li>
+        <li><span data-zh>设计系统初始化模块（INS Alignment），优化姿态与航向初值估计策略。</span><span data-en>Designed the INS alignment module to improve initial attitude / heading estimation.</span></li>
+        <li><span data-zh>建模并优化非完整约束（NHC），提升车辆运动约束精度与系统稳定性。</span><span data-en>Modeled and refined the non-holonomic constraint (NHC) for better vehicle-motion constraints and stability.</span></li>
         <li><span data-zh>基于 ROS 构建多传感器数据同步与通信框架，实现实时融合与模块化部署。</span><span data-en>Built a ROS-based multi-sensor synchronization framework for real-time fusion and modular deployment.</span></li>
       </ul>
-      <div class="tags">
-        <span class="tag">GNSS/INS</span><span class="tag">LiDAR</span><span class="tag">ROS</span><span class="tag">NHC</span>
+      <div class="tags"><span class="tag">GNSS/INS</span><span class="tag">ROS</span><span class="tag">NHC</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="more">
+  <div class="wrap">
+    <div class="grid2">
+      <div class="mini">
+        <h3><span data-zh>竞赛经历</span><span data-en>Competitions</span></h3>
+        <p data-zh>第二十二届中国研究生数学建模竞赛（华为杯）· 全国二等奖 · 队长（2025）—— 基于数据特征重构与迁移学习的高铁轴承跨域故障诊断。</p>
+        <p data-en>22nd China Post-Graduate Mathematical Contest in Modeling (Huawei Cup) · National 2nd Prize · Team Leader (2025) — cross-domain bearing fault diagnosis via feature reconstruction and transfer learning.</p>
+      </div>
+      <div class="mini">
+        <h3><span data-zh>实习经历</span><span data-en>Internship</span></h3>
+        <p data-zh>智元创新 · SLAM 算法实习生（2026.04–06）—— 负责机器人定位与感知模块，融合相机 / 激光雷达 / 惯导 / 足式里程计，设计多源融合算法框架输出稳定位姿。</p>
+        <p data-en>AgiBot · SLAM Algorithm Intern (Apr–Jun 2026) — robot localization &amp; perception, fusing camera / LiDAR / IMU / legged odometry into a multi-sensor framework for stable pose output.</p>
       </div>
     </div>
-
   </div>
 </section>
 
 <section id="skills">
   <div class="wrap">
-    <div class="sec-title"><span data-zh>技能</span><span data-en>Skills</span></div>
+    <div class="sec-head"><h2><span data-zh>技能</span><span data-en>Skills</span></h2><div class="rule"></div></div>
     <div class="skills">
-      <span class="skill">C/C++</span>
-      <span class="skill">Python</span>
-      <span class="skill">PyTorch</span>
-      <span class="skill">Matlab</span>
-      <span class="skill">ROS</span>
-      <span class="skill">Eigen</span>
-      <span class="skill">Ceres</span>
-      <span class="skill">OpenCV</span>
-      <span class="skill">PCL</span>
-      <span class="skill">CMake</span>
-      <span class="skill">Docker</span>
-      <span class="skill">Git</span>
-      <span class="skill">Linux</span>
+      <span class="skill">C/C++</span><span class="skill">Python</span><span class="skill">PyTorch</span>
+      <span class="skill">Matlab</span><span class="skill">ROS</span><span class="skill">Eigen</span>
+      <span class="skill">Ceres</span><span class="skill">OpenCV</span><span class="skill">PCL</span>
+      <span class="skill">CMake</span><span class="skill">Docker</span><span class="skill">Git</span><span class="skill">Linux</span>
     </div>
   </div>
 </section>
 
 <section id="contact">
   <div class="wrap">
-    <div class="sec-title"><span data-zh>联系方式</span><span data-en>Contact</span></div>
-    <p style="color:var(--text-dim)">
-      <span data-zh>欢迎交流 SLAM / 多传感器融合 / 具身状态估计相关话题。</span>
-      <span data-en>Happy to chat about SLAM / sensor fusion / embodied state estimation.</span>
+    <div class="sec-head"><h2><span data-zh>联系方式</span><span data-en>Contact</span></h2><div class="rule"></div></div>
+    <p style="color:var(--text-dim);font-size:14px">
+      <span data-zh>欢迎交流 SLAM / 多传感器融合 / 机器人状态估计相关话题。</span>
+      <span data-en>Happy to connect on SLAM / sensor fusion / robot state estimation.</span>
     </p>
-    <div class="hero-links" style="margin-top:14px">
-      <a class="btn" href="mailto:YOUR_EMAIL@example.com">✉ Email</a>
-      <a class="btn" href="https://github.com/YOUR_ID" target="_blank">GitHub</a>
+    <div class="links" style="margin-top:14px">
+      <a class="btn" href="mailto:kaixinfeng@whu.edu.cn">✉ kaixinfeng@whu.edu.cn</a>
+      <a class="btn" href="https://github.com/Fengkxc" target="_blank">GitHub</a>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    © 2026 Yu Zhang ·
-    <span data-zh>用 HTML 手写，托管于 GitHub Pages</span>
-    <span data-en>Hand-coded HTML, hosted on GitHub Pages</span>
+    © 2026 Kaixin Feng ·
+    <span data-zh>手写 HTML · 托管于 GitHub Pages</span>
+    <span data-en>Hand-coded HTML · hosted on GitHub Pages</span>
   </div>
 </footer>
 

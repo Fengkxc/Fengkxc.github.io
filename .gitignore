@@ -1,0 +1,5 @@
+# 敏感文件，绝不上传
+token.txt
+*.token
+*.pem
+.env
