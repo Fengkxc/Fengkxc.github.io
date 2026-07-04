@@ -6,24 +6,24 @@
 <title>Kaixin Feng · SLAM & Multi-Sensor Fusion</title>
 <style>
   :root{
-    --bg:#0b0f17;
-    --bg-soft:#0f141f;
-    --card:#131a26;
-    --card-hover:#182131;
-    --border:#232e42;
-    --border-soft:#1b2434;
-    --text:#eef2f8;
-    --text-dim:#98a6bd;
-    --text-faint:#66748c;
-    --accent:#4ea8ff;
-    --accent-2:#38e0c8;
-    --maxw:820px;
+    --bg:#ffffff;
+    --bg-soft:#f5f7fa;
+    --card:#ffffff;
+    --card-hover:#f7f9fc;
+    --border:#e2e7ef;
+    --border-soft:#eef1f6;
+    --text:#1a2230;
+    --text-dim:#4b5769;
+    --text-faint:#8793a5;
+    --accent:#2563eb;
+    --accent-2:#0891b2;
+    --maxw:840px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
     font-family:"Inter",-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Helvetica,sans-serif;
-    background:var(--bg);color:var(--text);line-height:1.7;
+    background:var(--bg);color:var(--text);line-height:1.75;font-size:16.5px;
     -webkit-font-smoothing:antialiased;letter-spacing:.1px;
   }
   a{color:var(--accent);text-decoration:none;transition:color .18s}
@@ -32,95 +32,98 @@
   body::before{
     content:"";position:fixed;inset:0;z-index:-2;
     background:
-      radial-gradient(680px circle at 15% -5%, rgba(78,168,255,0.10), transparent 50%),
-      radial-gradient(560px circle at 95% 8%, rgba(56,224,200,0.07), transparent 45%);
+      radial-gradient(680px circle at 15% -5%, rgba(37,99,235,0.06), transparent 50%),
+      radial-gradient(560px circle at 95% 8%, rgba(8,145,178,0.05), transparent 45%);
   }
 
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
 
   /* nav */
-  nav{position:sticky;top:0;z-index:50;background:rgba(11,15,23,.72);
+  nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.82);
     backdrop-filter:blur(12px);border-bottom:1px solid var(--border-soft)}
-  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
-  .brand{font-weight:700;letter-spacing:.4px;font-size:15px}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{font-weight:700;letter-spacing:.4px;font-size:16px}
   .brand span{color:var(--accent)}
-  .nav-right{display:flex;gap:24px;align-items:center}
-  .nav-right a{color:var(--text-dim);font-size:13.5px;font-weight:500}
+  .nav-right{display:flex;gap:26px;align-items:center}
+  .nav-right a{color:var(--text-dim);font-size:15px;font-weight:500}
   .nav-right a:hover{color:var(--text)}
   #langBtn{background:transparent;border:1px solid var(--border);color:var(--text-dim);
-    padding:5px 13px;border-radius:20px;cursor:pointer;font-size:12.5px;font-weight:600;transition:.18s}
+    padding:6px 14px;border-radius:20px;cursor:pointer;font-size:13.5px;font-weight:600;transition:.18s}
   #langBtn:hover{border-color:var(--accent);color:var(--accent)}
 
   /* hero */
-  header{padding:66px 0 30px}
-  .hero{display:flex;gap:36px;align-items:center;flex-wrap:wrap}
-  .avatar{width:118px;height:118px;border-radius:24px;flex-shrink:0;overflow:hidden;
-    background:linear-gradient(140deg,#1a2333,#0f1622);border:1px solid var(--border);
-    display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:700;color:var(--accent)}
+  header{padding:70px 0 34px}
+  .hero{display:flex;gap:38px;align-items:center;flex-wrap:wrap}
+  .avatar{width:132px;height:132px;border-radius:24px;flex-shrink:0;overflow:hidden;
+    background:linear-gradient(140deg,#eef2f8,#dfe6f0);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:700;color:var(--accent)}
   .avatar img{width:100%;height:100%;object-fit:cover}
-  .intro h1{font-size:30px;font-weight:750;line-height:1.2}
-  .intro h1 .en-name{font-size:17px;color:var(--text-dim);font-weight:500;margin-left:8px}
-  .tagline{color:var(--accent);font-size:14.5px;font-weight:600;margin:8px 0 12px;letter-spacing:.3px}
-  .intro p{color:var(--text-dim);font-size:14.5px;max-width:540px}
-  .links{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
-  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;
-    font-size:13.5px;font-weight:600;border:1px solid var(--border);color:var(--text)}
-  .btn:hover{border-color:var(--accent);color:var(--accent);background:var(--card)}
-  .btn-primary{background:var(--accent);color:#04101f;border-color:var(--accent)}
-  .btn-primary:hover{background:var(--accent-2);border-color:var(--accent-2);color:#04101f}
+  .intro h1{font-size:36px;font-weight:750;line-height:1.2}
+  .intro h1 .en-name{font-size:20px;color:var(--text-dim);font-weight:500;margin-left:10px}
+  .tagline{color:var(--accent);font-size:17px;font-weight:600;margin:10px 0 14px;letter-spacing:.3px}
+  .intro p{color:var(--text-dim);font-size:16px;max-width:560px}
+  .email-line{margin-top:14px;font-size:16px;font-weight:600;color:var(--text)}
+  .email-line a{color:var(--accent)}
+  .links{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:9px;
+    font-size:15px;font-weight:600;border:1px solid var(--border);color:var(--text)}
+  .btn:hover{border-color:var(--accent);color:var(--accent);background:var(--bg-soft)}
+  .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .btn-primary:hover{background:var(--accent-2);border-color:var(--accent-2);color:#fff}
 
   /* sections */
-  section{padding:30px 0}
-  .sec-head{display:flex;align-items:center;gap:14px;margin-bottom:22px}
-  .sec-head h2{font-size:13px;text-transform:uppercase;letter-spacing:2.5px;color:var(--accent);font-weight:700;white-space:nowrap}
+  section{padding:34px 0}
+  .sec-head{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+  .sec-head h2{font-size:15px;text-transform:uppercase;letter-spacing:2.5px;color:var(--accent);font-weight:700;white-space:nowrap}
   .sec-head .rule{height:1px;background:linear-gradient(90deg,var(--border),transparent);flex:1}
 
-  .entry{margin-bottom:24px}
+  .entry{margin-bottom:26px}
   .entry:last-child{margin-bottom:0}
   .entry-head{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:baseline}
-  .entry-title{font-size:16px;font-weight:650}
-  .entry-meta{color:var(--text-faint);font-size:12.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
-  .entry-sub{color:var(--text-dim);font-size:13.5px;margin-top:3px}
-  .entry-sub .hl{color:var(--accent-2)}
-  ul.bullets{list-style:none;margin-top:9px}
-  ul.bullets li{position:relative;padding-left:17px;color:var(--text-dim);font-size:13.8px;margin-bottom:5px}
-  ul.bullets li::before{content:"";position:absolute;left:2px;top:10px;width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.7}
-  .tags{margin-top:11px;display:flex;gap:7px;flex-wrap:wrap}
-  .tag{font-size:11.5px;padding:3px 11px;border-radius:20px;background:var(--bg-soft);
+  .entry-title{font-size:18.5px;font-weight:650}
+  .entry-meta{color:var(--text-faint);font-size:14px;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .entry-sub{color:var(--text-dim);font-size:15.5px;margin-top:4px}
+  .entry-sub .hl{color:var(--accent-2);font-weight:600}
+  ul.bullets{list-style:none;margin-top:11px}
+  ul.bullets li{position:relative;padding-left:19px;color:var(--text-dim);font-size:15.5px;margin-bottom:6px}
+  ul.bullets li::before{content:"";position:absolute;left:2px;top:11px;width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:.7}
+  .tags{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:13px;padding:4px 12px;border-radius:20px;background:var(--bg-soft);
     border:1px solid var(--border);color:var(--text-dim)}
 
   /* pub card */
-  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 22px;
-    transition:.2s;margin-bottom:14px}
-  .card:hover{background:var(--card-hover);border-color:#2d3c56;transform:translateY(-1px)}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 24px;
+    transition:.2s;margin-bottom:16px;box-shadow:0 1px 3px rgba(20,30,50,.04)}
+  .card:hover{background:var(--card-hover);border-color:#c9d3e3;transform:translateY(-1px);box-shadow:0 6px 18px rgba(20,30,50,.07)}
   .card:last-child{margin-bottom:0}
-  .pub-title{font-size:15px;font-weight:650;line-height:1.45}
-  .badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:5px;
-    background:rgba(78,168,255,.16);color:var(--accent);margin-left:2px;vertical-align:middle;letter-spacing:.3px}
-  .badge.oral{background:rgba(56,224,200,.15);color:var(--accent-2)}
-  .authors{font-size:13px;color:var(--text-dim);margin-top:8px}
+  .pub-title{font-size:17px;font-weight:650;line-height:1.5}
+  .badge{display:inline-block;font-size:12px;font-weight:700;padding:2px 10px;border-radius:5px;
+    background:rgba(37,99,235,.12);color:var(--accent);margin-left:2px;vertical-align:middle;letter-spacing:.3px}
+  .badge.oral{background:rgba(8,145,178,.12);color:var(--accent-2)}
+  .authors{font-size:15px;color:var(--text-dim);margin-top:9px}
   .authors b{color:var(--text)}
 
   /* two-col */
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .mini{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
-  .mini h3{font-size:14px;font-weight:650;margin-bottom:8px}
-  .mini p{font-size:13px;color:var(--text-dim)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .mini{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;box-shadow:0 1px 3px rgba(20,30,50,.04)}
+  .mini h3{font-size:16px;font-weight:650;margin-bottom:9px}
+  .mini p{font-size:14.5px;color:var(--text-dim)}
 
   /* skills */
-  .skills{display:flex;gap:8px;flex-wrap:wrap}
+  .skills{display:flex;gap:9px;flex-wrap:wrap}
   .skill{background:var(--card);border:1px solid var(--border);border-radius:8px;
-    padding:6px 13px;font-size:13px;color:var(--text)}
+    padding:7px 15px;font-size:14.5px;color:var(--text)}
   .skill:hover{border-color:var(--accent);color:var(--accent)}
 
-  footer{padding:38px 0;border-top:1px solid var(--border-soft);color:var(--text-faint);font-size:12.5px;text-align:center}
+  footer{padding:40px 0;border-top:1px solid var(--border-soft);color:var(--text-faint);font-size:14px;text-align:center}
 
   [data-en]{display:none}
   body.en [data-zh]{display:none}
   body.en [data-en]{display:revert}
 
   @media(max-width:600px){
-    .hero{flex-direction:column;text-align:center;gap:20px}
+    body{font-size:16px}
+    .hero{flex-direction:column;text-align:center;gap:22px}
     .links{justify-content:center}
     .grid2{grid-template-columns:1fr}
     .nav-right a:not(#langBtn){display:none}
@@ -157,12 +160,16 @@
         </div>
         <p data-zh>武汉大学测绘遥感信息工程全国重点实验室（LIESMARS）硕士研究生，导师李由教授。研究方向为 GNSS/IMU/LiDAR 多源融合定位与机器人状态估计，并探索用学习方法增强经典估计框架中的可靠性与噪声建模。</p>
         <p data-en>M.S. student at the State Key Laboratory of LIESMARS, Wuhan University, advised by Prof. You Li. My research centers on GNSS/IMU/LiDAR fusion positioning and robot state estimation, and on augmenting classical estimation frameworks with learning-based reliability and noise modeling.</p>
+        <div class="email-line">
+          <span data-zh>邮箱：</span><span data-en>Email:&nbsp;</span><a href="mailto:kaixinfeng@whu.edu.cn">kaixinfeng@whu.edu.cn</a>
+        </div>
         <div class="links">
           <a class="btn btn-primary" href="resume.pdf" target="_blank">
             <span data-zh>下载简历</span><span data-en>Download CV</span>
           </a>
-          <a class="btn" href="https://github.com/Fengkxc" target="_blank">GitHub</a>
-          <a class="btn" href="mailto:kaixinfeng@whu.edu.cn">Email</a>
+          <a class="btn" href="mailto:kaixinfeng@whu.edu.cn">
+            <span data-zh>发送邮件</span><span data-en>Contact Me</span>
+          </a>
         </div>
       </div>
     </div>
@@ -313,13 +320,12 @@
 <section id="contact">
   <div class="wrap">
     <div class="sec-head"><h2><span data-zh>联系方式</span><span data-en>Contact</span></h2><div class="rule"></div></div>
-    <p style="color:var(--text-dim);font-size:14px">
+    <p style="color:var(--text-dim);font-size:16px">
       <span data-zh>欢迎交流 SLAM / 多传感器融合 / 机器人状态估计相关话题。</span>
       <span data-en>Happy to connect on SLAM / sensor fusion / robot state estimation.</span>
     </p>
-    <div class="links" style="margin-top:14px">
-      <a class="btn" href="mailto:kaixinfeng@whu.edu.cn">✉ kaixinfeng@whu.edu.cn</a>
-      <a class="btn" href="https://github.com/Fengkxc" target="_blank">GitHub</a>
+    <div class="links" style="margin-top:16px">
+      <a class="btn btn-primary" href="mailto:kaixinfeng@whu.edu.cn">✉ kaixinfeng@whu.edu.cn</a>
     </div>
   </div>
 </section>
@@ -327,8 +333,8 @@
 <footer>
   <div class="wrap">
     © 2026 Kaixin Feng ·
-    <span data-zh>手写 HTML · 托管于 GitHub Pages</span>
-    <span data-en>Hand-coded HTML · hosted on GitHub Pages</span>
+    <span data-zh>武汉大学 LIESMARS</span>
+    <span data-en>LIESMARS, Wuhan University</span>
   </div>
 </footer>
 
